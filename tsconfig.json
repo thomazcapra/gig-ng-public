@@ -11,10 +11,11 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2015",
-    "lib": [
-      "es2018",
-      "dom"
-    ]
+    "lib": ["es2018", "dom"],
+    "paths": {
+      "@app/routes": ["./src/app/routes"],
+      "@app/services": ["./src/app/services"]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

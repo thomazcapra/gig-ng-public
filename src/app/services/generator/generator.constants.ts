@@ -1,0 +1,9 @@
+const LINE_SIZE = 10;
+
+export const GeneratorConstants = {
+  LINE_SIZE,
+  GRID_SIZE: LINE_SIZE * LINE_SIZE,
+  COUNT_LIMIT: 9,
+  GENERATION_TIME_MS: 2000,
+  CHARACTER_INPUT_DELAY_MS: 4000,
+};

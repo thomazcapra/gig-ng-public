@@ -1,0 +1,24 @@
+<p>
+  generator works!
+</p>
+
+<button (click)="goToPayments()">Go To Payments</button>
+<button (click)="onClick()">{{ buttonText }}</button>
+
+<form [formGroup]="form">
+  <input formControlName="char" maxlength="1" pattern="[a-z]" />
+</form>
+
+<div class="generator-grid">
+  <div
+    class="generator-grid-cell"
+    *ngFor="let item of grid.data$ | async; let i = index"
+    [style.width.%]="100 / grid.lineSize"
+  >
+    {{ item }}
+  </div>
+</div>
+
+<p>
+  {{ grid.code$ | async }}
+</p>

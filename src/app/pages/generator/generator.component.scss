@@ -1,0 +1,13 @@
+.generator {
+  &-grid {
+    width: 80%;
+    flex-wrap: wrap;
+    display: flex;
+
+    &-cell {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

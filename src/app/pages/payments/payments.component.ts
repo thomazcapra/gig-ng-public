@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterPaths } from '@app/routes';
 import { GeneratorService } from '@app/services';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-payments',
@@ -10,6 +9,8 @@ import { Observable } from 'rxjs';
   styleUrls: ['./payments.component.scss'],
 })
 export class PaymentsComponent implements OnInit {
+  code$ = this.service.getGridData().code$;
+
   constructor(private router: Router, private service: GeneratorService) {}
 
   ngOnInit() {}

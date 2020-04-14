@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { GeneratorConstants } from './generator.constants';
 
 export interface GridData {
@@ -21,6 +21,8 @@ export class GeneratorService {
   );
 
   private code$ = new BehaviorSubject<string>('');
+  private randomModeEnabled = false;
+  private stopGenerationSubject$ = new Subject<void>();
 
   constructor() {}
 
@@ -32,6 +34,10 @@ export class GeneratorService {
     };
   }
 
+  public getStopGenerationSubject$(): Subject<void> {
+    return this.stopGenerationSubject$;
+  }
+
   public generateRandomGrid(char?: string): void {
     const grid = new Array(GeneratorConstants.GRID_SIZE)
       .fill('')
@@ -41,6 +47,7 @@ export class GeneratorService {
           : this.generateRandomLowercaseLetter()
       );
 
+    // TODO: Consider input's char
     // if (char) {
     //   while ()
     // }
@@ -49,6 +56,17 @@ export class GeneratorService {
 
     this.code$.next(code);
     this.gridSubject$.next(grid);
+  }
+
+  /**
+   * isRandomModeEnable
+   */
+  public isRandomModeEnable(): boolean {
+    return this.randomModeEnabled;
+  }
+
+  public toggleRandomMode(): void {
+    this.randomModeEnabled = !this.randomModeEnabled;
   }
 
   /**

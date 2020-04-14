@@ -1,25 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterPaths } from '@app/routes';
 import { GeneratorService, GridData, GeneratorConstants } from '@app/services';
-import { interval, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { interval, Subject, Subscription, timer } from 'rxjs';
+import { takeUntil, first, filter, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-generator',
   templateUrl: './generator.component.html',
   styleUrls: ['./generator.component.scss'],
 })
-export class GeneratorComponent implements OnInit {
-  private stopGenerationSubject$ = new Subject<void>();
-  private randomMode = false;
-
+export class GeneratorComponent implements OnInit, OnDestroy {
   get buttonText(): string {
-    return this.randomMode ? 'STOP GENERATION' : 'GENERATE 2D GRID';
+    return this.service.isRandomModeEnable()
+      ? 'STOP GENERATION'
+      : 'GENERATE 2D GRID';
   }
 
   grid: GridData = this.service.getGridData();
+  private subscription$: Subscription;
 
   form: FormGroup = this.formBuilder.group({
     char: new FormControl(''),
@@ -31,7 +31,25 @@ export class GeneratorComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {}
 
-  ngOnInit() {}
+  ngOnInit(): void {
+    this.subscription$ = this.form.controls.char.valueChanges
+      .pipe(distinctUntilChanged())
+      .subscribe((value?: string): void => {
+        if (value) {
+          this.form.disable();
+          timer(GeneratorConstants.CHARACTER_INPUT_DELAY_MS)
+            .toPromise()
+            .then(() => {
+              this.form.reset({ char: '' });
+              this.form.enable();
+            });
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription$.unsubscribe();
+  }
 
   goToPayments(): void {
     this.router.navigate([RouterPaths.PAYMENTS]);
@@ -39,23 +57,24 @@ export class GeneratorComponent implements OnInit {
 
   private startRandomGeneration(): void {
     interval(GeneratorConstants.GENERATION_TIME_MS)
-      .pipe(takeUntil(this.stopGenerationSubject$))
+      .pipe(takeUntil(this.service.getStopGenerationSubject$()))
       .subscribe((): void => {
-        this.service.generateRandomGrid();
+        const { char } = this.form.getRawValue();
+        this.service.generateRandomGrid(char);
       });
   }
 
   private stopRandomGeneration(): void {
-    this.stopGenerationSubject$.next();
+    this.service.getStopGenerationSubject$().next();
   }
 
   onClick(): void {
-    if (this.randomMode) {
+    if (this.service.isRandomModeEnable()) {
       this.stopRandomGeneration();
     } else {
       this.startRandomGeneration();
     }
 
-    this.randomMode = !this.randomMode;
+    this.service.toggleRandomMode();
   }
 }

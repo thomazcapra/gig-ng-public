@@ -1,0 +1,36 @@
+<div class="generator__top-area">
+  <button mat-stroked-button color="primary" (click)="goToPayments()">
+    Go To Payments
+  </button>
+  <div class="form-and-button">
+    <form [formGroup]="form">
+      <mat-form-field appearance="outline">
+        <mat-label>Character</mat-label>
+        <input
+          matInput
+          placeholder="Character"
+          maxlength="1"
+          pattern="[a-z]"
+          [formControl]="form.controls.char"
+        />
+      </mat-form-field>
+    </form>
+    <button
+      mat-stroked-button
+      [color]="isRandomModeEnable ? 'secondary' : 'primary'"
+      (click)="onClick()"
+    >
+      {{ buttonText }}
+    </button>
+  </div>
+</div>
+
+<main class="generator__grid">
+  <mat-grid-list [cols]="grid.lineSize" rowHeight="1:1">
+    <mat-grid-tile *ngFor="let item of grid.data$ | async; let i = index">
+      {{ item }}
+    </mat-grid-tile>
+  </mat-grid-list>
+</main>
+
+<app-code></app-code>

@@ -33,6 +33,7 @@
     }
   }
 }
+
 app-code {
   position: fixed;
   bottom: 0;
@@ -40,4 +41,5 @@ app-code {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 1rem;
 }

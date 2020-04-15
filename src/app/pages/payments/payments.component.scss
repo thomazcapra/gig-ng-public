@@ -1,0 +1,16 @@
+.payments {
+  &-table-area {
+    width: 600px;
+    padding: 1rem;
+
+    table {
+      width: 100%;
+    }
+  }
+}
+
+app-code {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}

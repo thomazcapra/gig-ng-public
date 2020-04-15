@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { GeneratorConstants } from './generator.constants';
 
+/**
+ * Model that represents the grid's data and metadata.
+ */
 export interface GridData {
   data$: BehaviorSubject<Array<string>>;
   lineSize: number;
@@ -12,6 +15,9 @@ export interface GridData {
   providedIn: 'root',
 })
 export class GeneratorService {
+  /**
+   * Local behavior subject initialized with string.empty (initial grid)
+   */
   private gridSubject$ = new BehaviorSubject<Array<string>>(
     new Array(GeneratorConstants.GRID_SIZE).fill(
       '',
@@ -21,11 +27,22 @@ export class GeneratorService {
   );
 
   private code$ = new BehaviorSubject<string>('');
+
+  /**
+   * If random is enabled or not.
+   */
   private randomModeEnabled = false;
+
+  /**
+   * Subject to stop the random observale.
+   */
   private stopGenerationSubject$ = new Subject<void>();
 
   constructor() {}
 
+  /**
+   * Return the all the grid data.
+   */
   public getGridData(): GridData {
     return {
       data$: this.gridSubject$,
@@ -34,10 +51,17 @@ export class GeneratorService {
     };
   }
 
+  /**
+   * Return the stop subject$.
+   */
   public getStopGenerationSubject$(): Subject<void> {
     return this.stopGenerationSubject$;
   }
 
+  /**
+   * Genrate a new grid, with size: GeneratorConstants.GRID_SIZE, filled with random characters.
+   * @param char optional character that will be shown 20% on new grid.
+   */
   public generateRandomGrid(char?: string): void {
     const grid = new Array(GeneratorConstants.GRID_SIZE)
       .fill('')
@@ -47,11 +71,6 @@ export class GeneratorService {
           : this.generateRandomLowercaseLetter()
       );
 
-    // TODO: Consider input's char
-    // if (char) {
-    //   while ()
-    // }
-
     const code = this.calculateCode(grid);
 
     this.code$.next(code);
@@ -59,12 +78,15 @@ export class GeneratorService {
   }
 
   /**
-   * isRandomModeEnable
+   * If random mode is enabled or not.
    */
   public isRandomModeEnable(): boolean {
     return this.randomModeEnabled;
   }
 
+  /**
+   * Toggle the random mode.
+   */
   public toggleRandomMode(): void {
     this.randomModeEnabled = !this.randomModeEnabled;
   }
@@ -97,8 +119,9 @@ export class GeneratorService {
   }
 
   /**
+   * Calculate the code using the required logic.
    *
-   * @param grid the grid that will be
+   * @param grid the grid that will be used to calculate the code.
    */
   private calculateCode(grid: Array<string>): string {
     const [x, y] = new Date()

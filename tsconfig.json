@@ -15,8 +15,7 @@
     "paths": {
       "@app/routes": ["./src/app/routes"],
       "@app/services": ["./src/app/services"],
-      "@app/components": ["./src/app/components"],
-      "@app/env": ["./src/environments/environment"]
+      "@app/components": ["./src/app/components"]
     }
   },
   "angularCompilerOptions": {

@@ -14,7 +14,8 @@
     "lib": ["es2018", "dom"],
     "paths": {
       "@app/routes": ["./src/app/routes"],
-      "@app/services": ["./src/app/services"]
+      "@app/services": ["./src/app/services"],
+      "@app/components": ["./src/app/components"]
     }
   },
   "angularCompilerOptions": {

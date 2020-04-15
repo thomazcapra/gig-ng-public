@@ -6,4 +6,5 @@ export const GeneratorConstants = {
   COUNT_LIMIT: 9,
   GENERATION_TIME_MS: 2000,
   CHARACTER_INPUT_DELAY_MS: 4000,
+  CHARACTER_PATTERN: new RegExp(/[a-z]/),
 };

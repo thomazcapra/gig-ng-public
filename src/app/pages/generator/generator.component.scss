@@ -1,16 +1,43 @@
 .generator {
-  &-grid {
-    width: 80%;
-    flex-wrap: wrap;
+  &__grid {
     display: flex;
+    justify-content: center;
+    max-width: 600px;
+    padding: 0 20%;
 
-    &-cell {
-      box-sizing: border-box;
-      border: 1px solid;
-      height: 30px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    mat-grid-list {
+      width: 100%;
+
+      mat-grid-tile {
+        background: lightblue;
+      }
     }
   }
+
+  &__top-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+    align-items: center;
+
+    .form-and-button {
+      display: flex;
+      padding: 1rem;
+      justify-content: space-evenly;
+      min-width: 400px;
+
+      mat-form-field {
+        width: 7rem;
+      }
+    }
+  }
+}
+app-code {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

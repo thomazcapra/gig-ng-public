@@ -13,9 +13,11 @@ import { takeUntil, first, filter, distinctUntilChanged } from 'rxjs/operators';
 })
 export class GeneratorComponent implements OnInit, OnDestroy {
   get buttonText(): string {
-    return this.service.isRandomModeEnable()
-      ? 'STOP GENERATION'
-      : 'GENERATE 2D GRID';
+    return this.isRandomModeEnable ? 'STOP GENERATION' : 'GENERATE 2D GRID';
+  }
+
+  get isRandomModeEnable(): boolean {
+    return this.service.isRandomModeEnable();
   }
 
   grid: GridData = this.service.getGridData();
@@ -35,7 +37,7 @@ export class GeneratorComponent implements OnInit, OnDestroy {
     this.subscription$ = this.form.controls.char.valueChanges
       .pipe(distinctUntilChanged())
       .subscribe((value?: string): void => {
-        if (value) {
+        if (GeneratorConstants.CHARACTER_PATTERN.test(value)) {
           this.form.disable();
           timer(GeneratorConstants.CHARACTER_INPUT_DELAY_MS)
             .toPromise()
@@ -43,6 +45,8 @@ export class GeneratorComponent implements OnInit, OnDestroy {
               this.form.reset({ char: '' });
               this.form.enable();
             });
+        } else {
+          this.form.reset({ char: '' });
         }
       });
   }
@@ -69,7 +73,7 @@ export class GeneratorComponent implements OnInit, OnDestroy {
   }
 
   onClick(): void {
-    if (this.service.isRandomModeEnable()) {
+    if (this.isRandomModeEnable) {
       this.stopRandomGeneration();
     } else {
       this.startRandomGeneration();

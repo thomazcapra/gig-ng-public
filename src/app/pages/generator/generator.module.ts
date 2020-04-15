@@ -4,6 +4,11 @@ import { GeneratorComponent } from './generator.component';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { ComponentsModule } from '@app/components';
+
 const routes: Routes = [
   {
     path: '',
@@ -11,11 +16,15 @@ const routes: Routes = [
   },
 ];
 
+const MATERIAL_MODULES = [MatGridListModule, MatButtonModule, MatInputModule];
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    ComponentsModule,
     ReactiveFormsModule,
+    ...MATERIAL_MODULES,
     RouterModule.forChild(routes),
   ],
   declarations: [GeneratorComponent],
